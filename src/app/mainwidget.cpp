@@ -1,7 +1,8 @@
 #include "mainwidget.hpp"
+#include "dbservice.hpp"
 
-MainWidget::MainWidget(QWidget *parent)
-    : QWidget{parent}
+MainWidget::MainWidget(DbService& dbservice, QWidget *parent)
+    : QWidget{parent}, mDbService(dbservice)
 {
 
 }
