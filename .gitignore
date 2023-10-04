@@ -1,0 +1,5 @@
+# cmake
+CMakeLists.txt.user*
+
+# build target
+_build/*
