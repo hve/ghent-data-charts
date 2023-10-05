@@ -3,7 +3,10 @@
 
 #include <QSqlDatabase>
 #include <QSqlError>
+#include <QHash>
+#include <QVector>
 #include <memory>
+#include "model.hpp"
 
 class DbService
 {
@@ -13,14 +16,31 @@ public:
     virtual ~DbService();
 
      bool init();
-     QSqlError lastError() const { return mDb.lastError(); }
+     QSqlError lastError() const { return mLastError; }
+
+     const QVector<District>& districts() const { return mDistricts; }
+     const QVector<CrimeCategory>& crimeCategories() const { return mCrimeCategories; }
+
+     District findDistrictById(int id) const;
+     District findDistrictByName(const QString& name) const;
+     CrimeCategory findCrimeCategoryById(int id) const;
+     CrimeCategory findCrimeCategoryByName(const QString& name) const;
+
+ private:
+     bool loadDistricts();
+     bool loadCrimeCategories();
 
  private:
     DbService(const QString& file_name);
 
-
     QString mDbFileName;
     QSqlDatabase mDb;
+    QSqlError mLastError;
+
+    QVector<District> mDistricts;
+    QHash<int, District> mDistrictIdMap;
+    QVector<CrimeCategory> mCrimeCategories;
+    QHash<int, CrimeCategory> mCrimeCategoryIdMap;
 };
 
 #endif // DBSERVICE_HPP

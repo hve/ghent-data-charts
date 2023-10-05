@@ -4,6 +4,8 @@ qt_add_executable(ghent-data-charts
     mainwidget.hpp
     mainwidget.cpp
     main.cpp
+    model.hpp
+    model.cpp
 )
 
 target_link_libraries(ghent-data-charts PRIVATE Qt6::Widgets Qt6::Sql)
