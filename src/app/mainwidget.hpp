@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+
 #ifndef MAINWIDGET_HPP
 #define MAINWIDGET_HPP
 

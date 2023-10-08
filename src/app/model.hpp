@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+
 #ifndef MODEL_HPP
 #define MODEL_HPP
 

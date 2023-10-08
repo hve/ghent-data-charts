@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+
 #ifndef BASECHARTWIDGET_HPP
 #define BASECHARTWIDGET_HPP
 

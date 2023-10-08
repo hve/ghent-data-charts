@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+
 #include "mainwidget.hpp"
 #include "citypopulationchart.hpp"
 #include "dbservice.hpp"
