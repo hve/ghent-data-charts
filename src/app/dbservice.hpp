@@ -26,6 +26,10 @@ public:
      CrimeCategory findCrimeCategoryById(int id) const;
      CrimeCategory findCrimeCategoryByName(const QString& name) const;
 
+     QVector<QPair<int, int>> getPopulationSeries();
+     QVector<QPair<int, int>> getPopulationSeriesForDistrict(int district_id);
+     QVector<QPair<int, double>> getPopulationDensitySeriesForDistrict(int district_id);
+
  private:
      bool loadDistricts();
      bool loadCrimeCategories();

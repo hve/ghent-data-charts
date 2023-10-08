@@ -72,9 +72,71 @@ CrimeCategory DbService::findCrimeCategoryByName(const QString &name) const
     return CrimeCategory{};
 }
 
+QVector<QPair<int, int> > DbService::getPopulationSeries()
+{
+    QVector<QPair<int, int>> result;
+
+    auto sql = QString("select jaar, bevolkingsaantal from bevolkingsaantal order by jaar");
+
+    QSqlQuery query(mDb);
+
+    if (!query.exec(sql)) {
+        mLastError = query.lastError();
+        return result;
+    }
+
+    while (query.next()) {
+        result.push_back(QPair<int, int>(query.value(0).toInt(), query.value(1).toInt()));
+    }
+
+    return result;
+}
+
+QVector<QPair<int, int>> DbService::getPopulationSeriesForDistrict(int district_id)
+{
+    QVector<QPair<int, int>> result;
+
+    auto sql = QString("select jaar, stadswijk_id, bevolkingsaantal from stadswijk_bevolkingsaantal where stadswijk_id=%1 order by jaar").arg(district_id);
+
+    QSqlQuery query(mDb);
+
+    if (!query.exec(sql)) {
+        mLastError = query.lastError();
+        return result;
+    }
+
+    while (query.next()) {
+        result.push_back(QPair<int, int>(query.value(0).toInt(), query.value(2).toInt()));
+    }
+
+    return result;
+}
+
+QVector<QPair<int, double> > DbService::getPopulationDensitySeriesForDistrict(int district_id)
+{
+    QVector<QPair<int, double>> result;
+
+    auto sql = QString("select jaar, stadswijk_id, bevolkingsaantal from stadswijk_bevolkingsaantal where stadswijk_id=%1 order by jaar").arg(district_id);
+
+    QSqlQuery query(mDb);
+
+    if (!query.exec(sql)) {
+        mLastError = query.lastError();
+        return result;
+    }
+
+    double area_km2 = findDistrictById(district_id).area_km2;
+
+    while (query.next()) {
+        result.push_back(QPair<int, double>(query.value(0).toInt(), query.value(2).toDouble() / area_km2));
+    }
+
+    return result;
+}
+
 bool DbService::loadDistricts()
 {
-    auto sql = "select stadswijk_id, stadswijk_naam, stadsdeel from stadswijk order by stadswijk_naam";
+    auto sql = "select stadswijk_id, stadswijk_naam, stadsdeel, oppervlakte_m2 from stadswijk order by stadswijk_naam";
 
     QSqlQuery query(mDb);
 
@@ -89,6 +151,7 @@ bool DbService::loadDistricts()
         district.id = query.value(0).toInt();
         district.name = query.value(1).toString();
         district.part = query.value(2).toString();
+        district.area_km2 = query.value(3).toDouble() / 1000000;    // use m2 for better resolution
 
         mDistricts.append(district);
         mDistrictIdMap.insert(district.id, district);

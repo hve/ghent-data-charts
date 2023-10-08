@@ -8,6 +8,7 @@ struct District
     int id = -1;
     QString name;
     QString part;
+    double area_km2 = 0.0f;
 };
 
 struct CrimeCategory
